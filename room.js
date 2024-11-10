@@ -2,8 +2,8 @@ const common = {
   floor: 'url(https://viopol.com.ua/content/images/17/1280x1280l80bc0/ivcroots22326_marsh_wood-18649234950929.webp)',
 };
 
-const rooms = {
-  bedroom: {
+const rooms = [
+  {
     name: 'Bedroom',
     backgrounds: {
       ceiling: '#F9F9F7',
@@ -12,7 +12,7 @@ const rooms = {
       floor: common.floor,
     },
   },
-  bedroom_master: {
+  {
     name: 'Master Bedroom',
     backgrounds: {
       ceiling: '#F9F9F7',
@@ -21,7 +21,7 @@ const rooms = {
       floor: common.floor,
     },
   },
-  office: {
+  {
     name: 'Office',
     backgrounds: {
       ceiling: '#F9F9F7',
@@ -30,7 +30,7 @@ const rooms = {
       floor: common.floor,
     },
   },
-};
+];
 
 function positionBackwall() {
   const x = window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight;
@@ -38,26 +38,44 @@ function positionBackwall() {
   backwall.style.transform = `translateZ(-${x - 1}px)`;
 }
 
+/**
+ * @param {HTMLElement} element
+ * @param {string} value
+ */
+function setBackground(element, value) {
+  if (value.startsWith('url(')) {
+    element.style.backgroundColor = '';
+    element.style.backgroundImage = value;
+  } else {
+    element.style.backgroundImage = '';
+    element.style.backgroundColor = value;
+  }
+}
+
 positionBackwall();
 
 window.addEventListener('resize', positionBackwall);
 
-for (const [roomId, roomConfig] of Object.entries(rooms)) {
+for (const room of rooms) {
   const button = document.createElement('button');
 
-  button.id = roomId;
   button.type = 'button';
-  button.title = roomConfig.name;
-  button.innerText = roomConfig.name;
+  button.title = room.name;
+  button.innerText = room.name;
   button.style.marginRight = '8px';
 
   button.addEventListener('click', () => {
-    document.title = roomConfig.name;
-    ceiling.style.background = roomConfig.backgrounds.ceiling;
-    backwall.style.background = roomConfig.backgrounds.backwall;
-    sidewall_left.style.background = roomConfig.backgrounds.sidewall;
-    sidewall_right.style.background = roomConfig.backgrounds.sidewall;
-    floor.style.background = roomConfig.backgrounds.floor;
+    document.title = room.name;
+
+    setBackground(ceiling, room.backgrounds.ceiling);
+    setBackground(backwall, room.backgrounds.backwall);
+    setBackground(sidewall_left, room.backgrounds.sidewall);
+    setBackground(sidewall_right, room.backgrounds.sidewall);
+    setBackground(floor, room.backgrounds.floor);
+
+    for (const switcher of rooms_switcher.children) {
+      switcher.disabled = switcher === button;
+    }
   });
 
   rooms_switcher.appendChild(button);
