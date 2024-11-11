@@ -7,36 +7,33 @@ html, body {
 }
 
 #viewport {
-  height: 100%;
-  width: 100%;
   background-color: transparent;
-  margin: 0;
-  padding: 0;
   overflow: hidden;
   perspective-origin: 50% 50%;
   transform-style: preserve-3d;
   perspective: 700px;
 }
 
-#room {
+#viewport, #viewport * {
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
+}
+
+#room {
   transform-style: preserve-3d;
 }
 
-#ceiling, #floor, #backwall, [id*="sidewall"] {
+#room > * {
   position: absolute;
-  height: 100%;
-  width: 100%;
   transform-style: preserve-3d;
   box-shadow: inset 0 20px 200px 8px rgba(0, 0, 0, 0.40);
 }
 
 #ceiling, #floor {
   bottom: 0;
-  transform-origin: 50% 100%;
+  transform-origin: 0 100%;
   transform: rotateX(90deg);
 }
 
@@ -51,7 +48,13 @@ html, body {
   background-repeat: no-repeat;
   background-position: top center;
   transform-origin: 100% 50%;
-  transform: rotateY(-90deg);
+  transform: translateZ(-100vh);
+}
+
+@media (orientation: portrait) {
+  #backwall {
+    transform: translateZ(-100vw);
+  }
 }
 
 [id*="sidewall"] {

@@ -30,12 +30,6 @@ const rooms = [
   },
 ];
 
-function positionBackwall() {
-  const x = window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight;
-
-  backwall.style.transform = `translateZ(-${x - 1}px)`;
-}
-
 /**
  * @param {HTMLElement} element
  * @param {string} value
@@ -49,10 +43,6 @@ function setBackground(element, value) {
     element.style.backgroundColor = value;
   }
 }
-
-positionBackwall();
-
-window.addEventListener('resize', positionBackwall);
 
 for (const room of rooms) {
   const button = document.createElement('button');
